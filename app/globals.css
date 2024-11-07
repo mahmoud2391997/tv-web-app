@@ -19,3 +19,15 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.image {
+  animation: vanish 4s;
+}
+
+ @keyframes vanish {
+  0% {
+opacity: 1;  }
+ 
+
+  100% {
+opacity: 0;  }
+}
