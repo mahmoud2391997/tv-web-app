@@ -19,9 +19,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="w-screen h-auto">
       <body
-        className={`${oswald.className}  `}
+        className={`${oswald.className} h-auto`}
       >
         <Navbar/>
         {children}
