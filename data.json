@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Movies",
+    "genres": [
+      {
+        "name": "Action",
+        "image": "https://heights-photos.s3.amazonaws.com/wp-content/uploads/2017/04/04191317/isabella-column-online.jpg"
+      },
+      {
+        "name": "Drama",
+        "image": "https://nofilmschool.com/media-library/downton-abbey-drama-tvgenre.jpg?id=34065351&width=1362&quality=90"
+      },
+      {
+        "name": "Comedy",
+        "image": "https://static1.colliderimages.com/wordpress/wp-content/uploads/2024/06/list-13-comedy-movies-that-are-perfect-from-start-to-finish-1.jpg?q=70&fit=crop&w=1140&h=&dpr=1"
+      }
+    ]
+  },
+  {
+    "name": "Shows",
+    "genres": [
+      {
+        "name": "Reality",
+        "image": "https://static1.colliderimages.com/wordpress/wp-content/uploads/2023/04/the-15-greatest-reality-shows-of-all-time.jpg"
+      },
+      {
+        "name": "Documentary",
+        "image": "https://voice123.com/blog/wp-content/uploads/2023/08/shutterstock_159404171_720.jpg"
+      },
+      {
+        "name": "Talk Show",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/President_Barack_Obama_with_David_Letterman_09-21-09.jpg/440px-President_Barack_Obama_with_David_Letterman_09-21-09.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Series",
+    "genres": [
+      {
+        "name": "Sci-Fi",
+        "image": "https://i.insider.com/5ea5f347698525546e3f4d45?width=700"
+      },
+      {
+        "name": "Fantasy",
+        "image": "https://nathanbweller.com/wp-content/uploads/2013/01/essential-fantasy-series-featured-image.jpg"
+      },
+      {
+        "name": "Mystery",
+        "image": "https://dnm.nflximg.net/api/v6/BvVbc2Wxr2w6QuoANoSpJKEIWjQ/AAAAQZYfswIhFZ8ij7IGhysDXswKETPTDhFsDfFfeiW_aCSJ-uolasRkFTvllNVZmR8M5XO4ymKfGzbAON8qkr6M-7IiZpNriXDck2ZFsr-5-aHaNxhYz60qNXhBbiFKg3Yg7CpIcy64P7J_k6uSSQ.jpg?r=d16"
+      }
+    ]
+  }
+]

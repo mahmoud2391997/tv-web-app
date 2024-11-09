@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Oswald
-} from "next/font/google";
-import Navbar from "./components/Navbar"
+import { Oswald } from "next/font/google";
+import Navbar from "./components/Navbar";
 const oswald = Oswald({ subsets: ["latin"] });
-
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,11 +16,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-screen h-auto">
-      <body
-        className={`${oswald.className} h-auto`}
-      >
-        <Navbar/>
+    <html lang="en" className="w-screen h-auto min-h-screen">
+      <body className={`${oswald.className} h-auto`}>
+        <Navbar />
         {children}
       </body>
     </html>
