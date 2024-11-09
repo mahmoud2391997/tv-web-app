@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import Footer from "./components/Footer";
 
 // app/page.tsx
 export default function Home() {
@@ -8,6 +9,41 @@ export default function Home() {
 interface obj  {
   image:string,video:string,type:string
 }
+interface genre{
+  name:string,image:string
+}
+interface Category  {
+  name:string,genres:genre[]
+}
+
+const categories: Category[] = [
+  {
+    name: "Movies",
+    genres: [
+      { name: "Action", image: "action-movie.jpg" },
+      { name: "Drama", image: "drama-movie.jpg" },
+      { name: "Comedy", image: "comedy-movie.jpg" },
+    ],
+  },
+  {
+    name: "Shows",
+    genres: [
+      { name: "Reality", image: "reality-show.jpg" },
+      { name: "Documentary", image: "documentary-show.jpg" },
+      { name: "Talk Show", image: "talk-show.jpg" },
+    ],
+  },
+  {
+    name: "Series",
+    genres: [
+      { name: "Sci-Fi", image: "sci-fi-series.jpg" },
+      { name: "Fantasy", image: "fantasy-series.jpg" },
+      { name: "Mystery", image: "mystery-series.jpg" },
+    ],
+  },
+];
+
+
   const images_videos : obj[] = [
     {
       image:"team.jpg",
@@ -25,7 +61,8 @@ interface obj  {
       type:"SERIES"
 
     }
-  ]
+  ];
+
   useEffect(() => {
     setShowVideo(false);
 
@@ -38,9 +75,9 @@ interface obj  {
     return () => clearTimeout(imageTimeout); // Cleanup timeout on unmount
   }, [currentImage]);
   return (
-    <div  className="w-screen pt-28 ">
+    <div  className="w-screen pt-32 ">
 <div className="flex relative">
-        <svg className="absolute top-[40%] z-50" width="100px" height="100px" viewBox="0 0 1024 1024"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z" fill="#000000" /></svg>
+        <svg className="absolute top-[50%] left-[2%] z-50" width="50px" height="50px" viewBox="0 0 1024 1024"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z" fill="#000000" /></svg>
 
 <section className=" w-5/6 h-[80vh] m-auto relative border-black border-8 bg-black">
         
@@ -61,7 +98,36 @@ interface obj  {
   }
   setTimeout(() => setShowVideo(false), 10);
 
- }} width="100px" height="100px" className="absolute  top-[40%] right-0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z" fill="#000000" /></svg> 
+ }} width="50px" height="50px" className="absolute  top-[50%] right-[2%]" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z" fill="#000000" /></svg> 
        </div>
+       <hr className="w-full h-4 bg-black border-0  mt-40" />
+       <h1 className="text-center my-16 font-extrabold text-5xl">CATEGORIES</h1>
+       <hr className="w-full h-1 bg-black border-0  " />
+
+  {categories.map((category) => (
+    <div  key={category.name}>
+      <section key={category.name} className="w-full h-auto  mb-10 py-10 ">
+      <h2 className="ml-[5%] mb-6 font-extrabold text-3xl">
+        {category.name.toUpperCase()} GENRES
+      </h2>
+      <div className="ml-[5%] flex w-[90%] justify-between h-96 overflow-x-hidden mt-10">
+        {category.genres.map((genre) => (
+          <div key={genre.name} className="w-1/4 h-full border-2 border-black">
+            <img
+              src={genre.image}
+              alt={genre.name}
+              className="w-full h-80 border-b-2 border-black"
+            />
+            <h3 className="text-center font-bold text-2xl mt-4">{genre.name}</h3>
+          </div>
+        ))}
+      </div>
+</section>
+<hr className="w-full h-[2px] bg-black border-0  " />
+
+        </div>
+  ))}
+
+<Footer/>
 </div>
   )}
