@@ -214,8 +214,6 @@ export default function Home() {
           <hr className="w-full h-[2px] bg-black border-0  " />
         </div>
       ))}
-
-      <Footer />
     </div>
   );
 }

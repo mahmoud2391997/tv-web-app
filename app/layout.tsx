@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Oswald } from "next/font/google";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 const oswald = Oswald({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={`${oswald.className} h-auto`}>
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

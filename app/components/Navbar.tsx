@@ -1,16 +1,42 @@
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+
 export default function Navbar() {
+  const [watchlistClicked, setWatchlistClicked] = useState(false);
   return (
     <nav className="w-full bg-transparent flex items-center absolute justify-between mt-9 z-50">
       <div className="flex items-center">
-        <div
-          id="logo"
-          className=" rounded-full bg-white w-16 h-16  flex justify-center items-center ml-10"
+        <Link
+          href={"/"}
+          onClick={() => {
+            setWatchlistClicked(false);
+          }}
         >
-          <span className="text-black font-extrabold text-5xl text-center ">
-            TV
-          </span>
-        </div>
-        <div className="text-2xl ml-10 cursor-pointer">WATCH LIST</div>
+          <div
+            id="logo"
+            className=" rounded-full bg-white w-16 h-16  flex justify-center items-center ml-10"
+          >
+            <span className="text-black font-extrabold text-5xl text-center ">
+              TV
+            </span>
+          </div>
+        </Link>
+
+        <Link
+          href={"/watchlist"}
+          onClick={() => {
+            setWatchlistClicked(true);
+          }}
+        >
+          <div
+            className={`text-2xl ml-10 cursor-pointer  ${
+              watchlistClicked ? "underline" : ""
+            }  `}
+          >
+            WATCH LIST
+          </div>
+        </Link>
       </div>
       <ul
         id="authentication"
