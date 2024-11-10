@@ -307,6 +307,18 @@ export default function Watchlist() {
     (_, index) => startPage + index
   );
 
+    const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
+  
+    useEffect(() => {
+      const handleResize = () => setIsLargeScreen(window.innerWidth > 1024);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+    const style = isLargeScreen ? { width: "calc(100% - 320px)" } : {};
+  
+  
+  
   // Previous and Next button handlers
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const nextPage = () =>
@@ -324,7 +336,7 @@ export default function Watchlist() {
           className="p-2 border border-gray-300 rounded-md flex-1"
         />
       </div>
-      <main className="w-full  relative h-full flex">
+      <main className="w-full  relative h-full flex flex-col-reverse lg:flex-row">
         {/* <section className="w-[150px] min-h-10 bg-black absolute h-auto rounded-lg py-3">
           <h2 className="text-white text-center font-bold text-2xl">
             CATEGORIES
@@ -341,13 +353,13 @@ export default function Watchlist() {
             ))}
           </div>
         </section> */}
-        <section style={{ width: "calc(100% - 320px)" }}>
-          {currentItems.map((item) => (
+        <section className="w-full lg:mt-0 md:mx-auto lg:mx-0 mt-5" style={style}>
+          {currentItems.map((item) => ( 
             <div
               key={item.title}
-              className="w-full mb-7 h-[250px] flex flex-col md:flex-row p-2 bg-black rounded-lg text-white"
+              className="w-full mb-7 lg:h-[250px] h-auto flex flex-col lg:flex-row p-2 bg-black rounded-lg text-white"
             >
-              <div className="w-[350px]">
+              <div className="lg:w-[350px] w-full">
                 <img
                   src={item.image}
                   alt="My Image"
@@ -371,7 +383,7 @@ export default function Watchlist() {
 
                   <p>Story : {item.story}</p>
                 </div>
-                <div className="px-4 flex flex-col justify-between absolute right-0 top-0">
+                <div className="px-4 flex flex-col justify-between static lg:absolute right-0 top-0">
                   {item.releaseDate ? (
                     <p className="text-lg">Release Date : {item.releaseDate}</p>
                   ) : null}
@@ -383,8 +395,8 @@ export default function Watchlist() {
             </div>
           ))}
         </section>
-        <div className="absolute right-0 flex flex-col items-end">
-          <section className="w-[310px] min-h-10 bg-black  h-auto rounded-lg  py-3">
+        <div className="lg:absolute static right-0 flex flex-col lg:items-end items-center">
+          <section className="lg:w-[310px] w-full min-h-10 bg-black  h-auto rounded-lg  py-3">
             <h2 className="text-white text-left ml-5 font-bold text-2xl">
               GENRES
             </h2>
@@ -408,7 +420,7 @@ export default function Watchlist() {
               )}
             </div>
           </section>
-          <div className="flex justify-center mt-6">
+          <div className=" justify-center mt-6 hidden lg:flex">
             <ul className="flex space-x-3 items-center">
               {/* Previous Button */}
               <li
@@ -457,6 +469,53 @@ export default function Watchlist() {
           </div>
         </div>
       </main>
+      <div className=" justify-center my-6 flex  lg:hidden">
+            <ul className="flex space-x-3 items-center">
+              {/* Previous Button */}
+              <li
+                onClick={prevPage}
+                className={`cursor-pointer text-white py-2 px-4 rounded-lg transition-colors 
+            ${
+              currentPage === 1
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-black hover:bg-gray-700"
+            }`}
+              >
+                Previous
+              </li>
+
+              {/* Page Numbers */}
+              {pages.map((page) => (
+                <li
+                  key={page}
+                  onClick={() => paginate(page)}
+                  className={`cursor-pointer text-white py-2 px-4 rounded-lg transition-colors 
+                ${
+                  currentPage === page
+                    ? "bg-gray-600"
+                    : "bg-black hover:bg-gray-700"
+                }`}
+                >
+                  {page}
+                </li>
+              ))}
+
+              {/* Next Button */}
+              <li
+                onClick={nextPage}
+                className={`
+            cursor-pointer text-white py-2 px-4 rounded-lg transition-colors 
+            ${
+              currentPage === totalPages
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-black hover:bg-gray-700"
+            }
+            `}
+              >
+                Next
+              </li>
+            </ul>
+          </div>
     </div>
   );
 }
