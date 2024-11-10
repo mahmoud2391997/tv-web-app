@@ -23,7 +23,8 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <Link
+      </div>
+        <Link className="mr-10"
           href={"/watchlist"}
           onClick={() => {
             setWatchlistClicked(true);
@@ -37,20 +38,7 @@ export default function Navbar() {
             WATCH LIST
           </div>
         </Link>
-      </div>
-      <ul
-        id="authentication"
-        className="flex justify-between w-60 text-2xl mr-10"
-      >
-        <li>
-          <button className="bg-black text-white w-28 rounded-lg">LOGIN</button>
-        </li>
-        <li>
-          <button className="bg-black text-white w-28 rounded-lg">
-            REGISTER
-          </button>
-        </li>
-      </ul>
+      
     </nav>
   );
 }
