@@ -140,7 +140,7 @@ export default function Home() {
           />
         </svg>
 
-        <section className=" w-5/6 h-[80vh] m-auto relative border-black border-8 bg-black">
+        <section className=" max-w-[1232px] w-full lg:h-[71vh] md:h-[60vh] sm:h-[50vh] h-[40vh] m-auto relative bg-black">
           {!showVideo && (
             <img
               src={images_videos[currentImage].image}
@@ -150,7 +150,7 @@ export default function Home() {
           <video
             id="video"
             src={images_videos[currentImage].video}
-            className="absolute z-0 w-full h-full"
+            className="absolute z-0 top-0 w-full h-full border-black border-8 "
             autoPlay
             muted
           ></video>
@@ -193,11 +193,11 @@ export default function Home() {
             <h2 className="ml-[5%] mb-6 font-extrabold text-3xl">
               {category.name.toUpperCase()} GENRES
             </h2>
-            <div className="ml-[5%] flex w-[90%] justify-between h-96 overflow-x-hidden mt-10">
+            <div className="ml-[5%] flex w-[90%] justify-between items-center min-h-96 overflow-x-hidden mt-10 flex-wrap">
               {category.genres.map((genre) => (
                 <div
                   key={genre.name}
-                  className="w-1/4 h-full border-2 border-black"
+                  className="lg:w-1/3 xl:w-1/4 w-full min-w-[300px] h-full border-2 border-black m-10 "
                 >
                   <img
                     src={genre.image}

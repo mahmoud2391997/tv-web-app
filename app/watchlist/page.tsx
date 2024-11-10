@@ -270,7 +270,7 @@ export default function Watchlist() {
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     console.log(value);
-
+    setCurrentPage(1);
     // Check if the checkbox is checked or unchecked
     if (e.target.checked) {
       setfilteredCategory((prev) => [...prev, value]); // Add genre to selected list
