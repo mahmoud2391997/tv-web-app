@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import fetchWatchList from "../api/watchlist";
 
 export default function Watchlist() {
   const [searchItem, setSearchItem] = useState("");
@@ -9,7 +10,6 @@ export default function Watchlist() {
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const router = useRouter();
   const genre = router.query.genre as string | undefined; // Handle as `string | undefined`
-  
   const [filteredCategory, setFilteredCategory] = useState<string[]>([]);
 
   useEffect(() => {
@@ -60,223 +60,28 @@ export default function Watchlist() {
     rating: string;
   }
 
-  const watchlist: WatchItem[] = [
-    {
-      category: "Movies",
-      genre: "Action",
-      title: "Mad Max: Fury Road",
-      image: "https://image.tmdb.org/t/p/w500/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg",
-      actors: ["Tom Hardy", "Charlize Theron"],
-      story:
-        "In a post-apocalyptic wasteland, Max teams up with Furiosa to survive.",
-      video: "https://www.youtube.com/watch?v=hEJnMQG9ev8",
-      releaseDate: "2015",
-      rating: "8.1/10",
-    },
-    {
-      category: "Movies",
-      genre: "Action",
-      title: "Die Hard",
-      image: "https://image.tmdb.org/t/p/w500/7f7aiS5w4Ve7kcdJbBOuj5gWzz9.jpg",
-      actors: ["Bruce Willis", "Alan Rickman"],
-      story: "A New York cop fights terrorists in a Los Angeles skyscraper.",
-      video: "https://www.youtube.com/watch?v=2TQ-pOvI6Xo",
-      releaseDate: "1988",
-      rating: "8.2/10",
-    },
-    {
-      category: "Movies",
-      genre: "Drama",
-      title: "The Shawshank Redemption",
-      image: "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
-      actors: ["Tim Robbins", "Morgan Freeman"],
-      story:
-        "Two imprisoned men bond over a number of years, finding solace and redemption.",
-      video: "https://www.youtube.com/watch?v=NmzuHjWmXOc",
-      releaseDate: "1994",
-      rating: "9.3/10",
-    },
-    {
-      category: "Movies",
-      genre: "Drama",
-      title: "Forrest Gump",
-      image: "https://image.tmdb.org/t/p/w500/h5J4W4veyxMXDMjeNxZI46TsHOb.jpg",
-      actors: ["Tom Hanks", "Robin Wright"],
-      story: "A man with a low IQ recounts his extraordinary life adventures.",
-      video: "https://www.youtube.com/watch?v=bLvqoHBptjg",
-      releaseDate: "1994",
-      rating: "8.8/10",
-    },
-    {
-      category: "Movies",
-      genre: "Comedy",
-      title: "The Hangover",
-      image: "https://image.tmdb.org/t/p/w500/bLQVRKZg2ve8qnD2VjmtXw9u89F.jpg",
-      actors: ["Bradley Cooper", "Ed Helms", "Zach Galifianakis"],
-      story:
-        "Three friends must piece together their wild night in Las Vegas to find their missing friend.",
-      video: "https://www.youtube.com/watch?v=tcdUhdOlz9M",
-      releaseDate: "2009",
-      rating: "7.7/10",
-    },
-    {
-      category: "Movies",
-      genre: "Comedy",
-      title: "Superbad",
-      image: "https://image.tmdb.org/t/p/w500/4TfApzPqfU0oI0ps5mjdl0hRrTv.jpg",
-      actors: ["Jonah Hill", "Michael Cera"],
-      story:
-        "Two high school friends attempt to make the most of their last days before graduation.",
-      video: "https://www.youtube.com/watch?v=4eaZ_48ZYog",
-      releaseDate: "2007",
-      rating: "7.6/10",
-    },
-    {
-      category: "Series",
-      genre: "Reality",
-      title: "Survivor",
-      image: "https://image.tmdb.org/t/p/w500/yH7YWb3qt4rkm7UGFYwA1zuPIwM.jpg",
-      actors: ["Jeff Probst"],
-      story:
-        "Contestants are stranded in remote locations and must outwit, outplay, and outlast each other to win.",
-      video: "https://www.youtube.com/watch?v=8z8vP7l4g14",
-      seasons: "40+",
-      rating: "7.3/10",
-    },
-    {
-      category: "Series",
-      genre: "Reality",
-      title: "The Amazing Race",
-      image: "https://image.tmdb.org/t/p/w500/kN2rbvPbPPi7f43bEnuQzL9oC5D.jpg",
-      actors: ["Phil Keoghan"],
-      story:
-        "Teams of two race around the world to win a grand prize in a test of endurance.",
-      video: "https://www.youtube.com/watch?v=rBq5yq_CeDE",
-      seasons: "33",
-      rating: "7.6/10",
-    },
-    {
-      category: "Series",
-      genre: "Documentary",
-      title: "Planet Earth",
-      image: "https://image.tmdb.org/t/p/w500/6FZS3b7PBZevnRxrTXZ0XRjcySx.jpg",
-      actors: ["David Attenborough"],
-      story:
-        "An exploration of Earth’s natural wonders and breathtaking wildlife.",
-      video: "https://www.youtube.com/watch?v=2P-ml7FI1Fs",
-      seasons: "2",
-      rating: "9.4/10",
-    },
-    {
-      category: "Series",
-      genre: "Documentary",
-      title: "Making a Murderer",
-      image: "https://image.tmdb.org/t/p/w500/xgzzkMIImJXQLUgSmr2k8J7RIh8.jpg",
-      actors: ["Steven Avery", "Brendan Dassey"],
-      story:
-        "A documentary exploring the controversial conviction of Steven Avery.",
-      video: "https://www.youtube.com/watch?v=qxgbdYaR_KQ",
-      seasons: "2",
-      rating: "8.6/10",
-    },
-    {
-      category: "Series",
-      genre: "Talk Show",
-      title: "The Tonight Show Starring Jimmy Fallon",
-      image: "https://image.tmdb.org/t/p/w500/8m2NOMQgn0W2EKC4eR4MvvnLueB.jpg",
-      actors: ["Jimmy Fallon"],
-      story:
-        "A late-night talk show featuring celebrity guests, comedy skits, and musical performances.",
-      video: "https://www.youtube.com/watch?v=_4oK9hbxzxU",
-      seasons: "9+",
-      rating: "7.1/10",
-    },
-    {
-      category: "Series",
-      genre: "Talk Show",
-      title: "The Ellen DeGeneres Show",
-      image: "https://image.tmdb.org/t/p/w500/w7kt9frlxhVnV6uMc75TW84vGns.jpg",
-      actors: ["Ellen DeGeneres"],
-      story:
-        "A daytime talk show featuring celebrity interviews, games, and giveaways.",
-      video: "https://www.youtube.com/watch?v=jIuG5v6d9QA",
-      seasons: "19",
-      rating: "6.9/10",
-    },
-    {
-      category: "Shows",
-      genre: "Sci-Fi",
-      title: "Stranger Things",
-      image: "https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg",
-      actors: ["Millie Bobby Brown", "Finn Wolfhard", "Winona Ryder"],
-      story:
-        "A group of kids uncover supernatural forces and secret experiments in their town.",
-      video: "https://www.youtube.com/watch?v=b9EkMc79ZSU",
-      seasons: "4",
-      rating: "8.7/10",
-    },
-    {
-      category: "Shows",
-      genre: "Sci-Fi",
-      title: "The Expanse",
-      image: "https://image.tmdb.org/t/p/w500/8Ww4mEQ9gMl07JwEn4ZALd0zPGk.jpg",
-      actors: ["Steven Strait", "Dominique Tipper"],
-      story:
-        "A detective and a rogue captain unravel a conspiracy in a future where humanity has colonized space.",
-      video: "https://www.youtube.com/watch?v=caLji74IIp4",
-      seasons: "6",
-      rating: "8.5/10",
-    },
-    {
-      category: "Shows",
-      genre: "Fantasy",
-      title: "Game of Thrones",
-      image: "https://image.tmdb.org/t/p/w500/zrPpUlehQaBf8YX2NrVrKK8IEpf.jpg",
-      actors: ["Emilia Clarke", "Kit Harington", "Peter Dinklage"],
-      story:
-        "Noble families vie for control over the Seven Kingdoms of Westeros.",
-      video: "https://www.youtube.com/watch?v=KPLWWIOCOOQ",
-      seasons: "8",
-      rating: "9.3/10",
-    },
-    {
-      category: "Shows",
-      genre: "Fantasy",
-      title: "The Witcher",
-      image: "https://image.tmdb.org/t/p/w500/4LrRGUzR7v3irRlDE4ZL1wefwDX.jpg",
-      actors: ["Henry Cavill", "Anya Chalotra"],
-      story:
-        "Geralt of Rivia, a mutated monster-hunter, journeys through a world where people often prove more wicked than beasts.",
-      video: "https://www.youtube.com/watch?v=ndl1W4ltcmg",
-      seasons: "3",
-      rating: "8.2/10",
-    },
-    {
-      category: "Shows",
-      genre: "Mystery",
-      title: "Sherlock",
-      image: "https://image.tmdb.org/t/p/w500/7YgF30nWyw4C0C4b6vSe8Oq9A71.jpg",
-      actors: ["Benedict Cumberbatch", "Martin Freeman"],
-      story:
-        "Sherlock Holmes and Dr. Watson solve modern-day mysteries in London.",
-      video: "https://www.youtube.com/watch?v=xK7S9mrFWL4",
-      seasons: "4",
-      rating: "9.1/10",
-    },
-    {
-      category: "Shows",
-      genre: "Mystery",
-      title: "True Detective",
-      image: "https://image.tmdb.org/t/p/w500/2sGGmyEZVPdfRW9aqotO0CzFTIH.jpg",
-      actors: ["Matthew McConaughey", "Woody Harrelson"],
-      story:
-        "Detectives investigate dark cases and the effect they have on their personal lives.",
-      video: "https://www.youtube.com/watch?v=TXwCoNwBSkQ",
-      seasons: "3",
-      rating: "9.0/10",
-    },
-  ];
-  const [items, setItems] = useState(watchlist);
+  const [items, setItems] = useState<WatchItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Loading state to manage loading status
+  const [error, setError] = useState<string | null>(null); // Error state
+  useEffect(() => {
+    const getWatchList = async () => {
+      try {
+        // Fetch the watchlist and set the state with the response
+        const watchList = await fetchWatchList();
+        setItems(watchList);
+      } catch (err) {
+        // Handle any errors during the fetch
+        setError('Failed to fetch watchlist.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getWatchList(); // Invoke the async function
+  }, []);
+
+
+
   const totalPages = Math.ceil(items.length / itemsPerPage);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -291,7 +96,7 @@ export default function Watchlist() {
     }
   };
   useEffect(() => {
-    const results = watchlist.filter(
+    const results = [...items].filter(
       (item) =>
         item.title.toLowerCase().includes(searchItem.toLowerCase()) &&
         (filteredCategory.length === 0 || filteredCategory.includes(item.genre))
@@ -338,6 +143,8 @@ export default function Watchlist() {
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const nextPage = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  if (loading) return <div>Loading...</div>; // Show loading message while data is fetching
+  if (error) return <div>{error}</div>; // 
   return (
     <div className="pt-32 px-[2.5%] min-h-screen">
       <div className="flex items-center space-x-4 p-4 bg-black rounded-lg mb-4">

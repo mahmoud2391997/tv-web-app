@@ -2,11 +2,18 @@
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Link from "next/link";
+import fetchWatchList from "./api/watchlist";
+import fetchCategories from "./api/categories";
+import fetchMostWatched from "./api/mostwatched";
 
 // app/page.tsx
 export default function Home() {
   const [currentImage, setCurrentImage] = useState(0); // State to track which image is displayed
   const [showVideo, setShowVideo] = useState(false); // State to control video visibility
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [mostWatched, setMostWatched] = useState<obj[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   interface obj {
     image: string;
     video: string;
@@ -21,92 +28,25 @@ export default function Home() {
     genres: genre[];
   }
 
-  const categories: Category[] = [
-    {
-      name: "Movies",
-      genres: [
-        {
-          name: "Action",
-          image:
-            "https://heights-photos.s3.amazonaws.com/wp-content/uploads/2017/04/04191317/isabella-column-online.jpg",
-        },
-        {
-          name: "Drama",
-          image:
-            "https://nofilmschool.com/media-library/downton-abbey-drama-tvgenre.jpg?id=34065351&width=1362&quality=90",
-        },
-        {
-          name: "Comedy",
-          image:
-            "https://static1.colliderimages.com/wordpress/wp-content/uploads/2024/06/list-13-comedy-movies-that-are-perfect-from-start-to-finish-1.jpg?q=70&fit=crop&w=1140&h=&dpr=1",
-        },
-      ],
-    },
-    {
-      name: "Shows",
-      genres: [
-        {
-          name: "Reality",
-          image:
-            "https://static1.colliderimages.com/wordpress/wp-content/uploads/2023/04/the-15-greatest-reality-shows-of-all-time.jpg",
-        },
-        {
-          name: "Documentary",
-          image:
-            "https://voice123.com/blog/wp-content/uploads/2023/08/shutterstock_159404171_720.jpg",
-        },
-        {
-          name: "Talk Show",
-          image:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/President_Barack_Obama_with_David_Letterman_09-21-09.jpg/440px-President_Barack_Obama_with_David_Letterman_09-21-09.jpg",
-        },
-      ],
-    },
-    {
-      name: "Series",
-      genres: [
-        {
-          name: "Sci-Fi",
-          image: "https://i.insider.com/5ea5f347698525546e3f4d45?width=700",
-        },
-        {
-          name: "Fantasy",
-          image:
-            "https://nathanbweller.com/wp-content/uploads/2013/01/essential-fantasy-series-featured-image.jpg",
-        },
-        {
-          name: "Mystery",
-          image:
-            "https://dnm.nflximg.net/api/v6/BvVbc2Wxr2w6QuoANoSpJKEIWjQ/AAAAQZYfswIhFZ8ij7IGhysDXswKETPTDhFsDfFfeiW_aCSJ-uolasRkFTvllNVZmR8M5XO4ymKfGzbAON8qkr6M-7IiZpNriXDck2ZFsr-5-aHaNxhYz60qNXhBbiFKg3Yg7CpIcy64P7J_k6uSSQ.jpg?r=d16",
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch all data in parallel
+        const [mostWatchedData, categoriesData] = await Promise.all([
+          fetchMostWatched(),
+          fetchCategories() ,       ]);
 
-  const images_videos: obj[] = [
-    {
-      image:
-        "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-      video:
-        "https://firebasestorage.googleapis.com/v0/b/canteen-e3751.appspot.com/o/3045163-hd_1920_1080_25fps.mp4?alt=media&token=bb97cfb1-2ac7-4459-a481-d4e39b921d30",
-      type: "MOVIE",
-    },
-    {
-      image:
-        "https://gratisography.com/wp-content/uploads/2024/10/gratisography-cool-cat-800x525.jpg",
-      video:
-        "https://firebasestorage.googleapis.com/v0/b/canteen-e3751.appspot.com/o/855289-hd_1920_1080_25fps.mp4?alt=media&token=bb70817b-7215-493e-9c0e-c7f43d32fc4a",
-      type: "SHOW",
-    },
-    {
-      image:
-        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-      video:
-        "https://firebasestorage.googleapis.com/v0/b/canteen-e3751.appspot.com/o/856787-hd_1920_1080_30fps.mp4?alt=media&token=9d0f0b92-0e91-4976-8871-dd3a89d76af2",
-      type: "SERIES",
-    },
-  ];
+        setCategories(categoriesData); // Set categories data
+        setMostWatched(mostWatchedData); // Set most watched data
+      } catch (err) {
+        setError('Failed to fetch data.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchData(); // Trigger fetching
+  }, []);
   useEffect(() => {
     setShowVideo(false);
 
@@ -116,6 +56,8 @@ export default function Home() {
 
     return () => clearTimeout(imageTimeout); // Cleanup timeout on unmount
   }, [currentImage]);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
   return (
     <div className="w-full pt-32 ">
       <div className="flex relative">
@@ -124,7 +66,7 @@ export default function Home() {
             if (currentImage > 0) {
               setCurrentImage((prev) => prev - 1);
             } else {
-              setCurrentImage(images_videos.length - 1);
+              setCurrentImage(mostWatched.length - 1);
             }
             setTimeout(() => setShowVideo(false), 10);
           }}
@@ -144,13 +86,13 @@ export default function Home() {
         <section className=" max-w-[1232px] w-full lg:h-[71vh] md:h-[60vh] sm:h-[50vh] h-[40vh] m-auto relative bg-black">
           {!showVideo && (
             <img
-              src={images_videos[currentImage].image}
+              src={mostWatched[currentImage].image}
               className={`absolute z-40 w-full h-full `}
             />
           )}
           <video
             id="video"
-            src={images_videos[currentImage].video}
+            src={mostWatched[currentImage].video}
             className="absolute z-0 top-0 w-full h-full border-black border-8 "
             autoPlay
             muted
@@ -158,13 +100,13 @@ export default function Home() {
           <div className="absolute right-0 bottom-0 bg-white z-50 ">
             <h3>
               TRAILER OF
-              <br /> MOST WATCHED {images_videos[currentImage].type}{" "}
+              <br /> MOST WATCHED {mostWatched[currentImage].type}{" "}
             </h3>
           </div>
         </section>
         <svg
           onClick={() => {
-            if (currentImage < images_videos.length - 1) {
+            if (currentImage < mostWatched.length - 1) {
               setCurrentImage((prev) => prev + 1);
             } else {
               setCurrentImage(0);
