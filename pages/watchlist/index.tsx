@@ -61,6 +61,7 @@ export default function Watchlist() {
   }
 
   const [items, setItems] = useState<WatchItem[]>([]);
+  const [filteredItems , setFilteredItems] = useState<WatchItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Loading state to manage loading status
   const [error, setError] = useState<string | null>(null); // Error state
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function Watchlist() {
 
 
 
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -101,11 +102,11 @@ export default function Watchlist() {
         item.title.toLowerCase().includes(searchItem.toLowerCase()) &&
         (filteredCategory.length === 0 || filteredCategory.includes(item.genre))
     );
-    setItems(results);
-  }, [searchItem, filteredCategory]); // Re-run when either searchItem or filteredCategory changes
+    setFilteredItems(results);
+  }, [searchItem, filteredCategory,items]); // Re-run when either searchItem or filteredCategory changes
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = [...items].slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = [...filteredItems].slice(indexOfFirstItem, indexOfLastItem);
 
   // Handle page number click
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -143,7 +144,8 @@ export default function Watchlist() {
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const nextPage = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  if (loading) return <div>Loading...</div>; // Show loading message while data is fetching
+  if (loading) return <div className="w-full
+   h-screen text-center text-2xl">Loading...</div>; // Show loading message while data is fetching
   if (error) return <div>{error}</div>; // 
   return (
     <div className="pt-32 px-[2.5%] min-h-screen">

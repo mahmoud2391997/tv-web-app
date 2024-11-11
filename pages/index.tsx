@@ -56,7 +56,8 @@ export default function Home() {
 
     return () => clearTimeout(imageTimeout); // Cleanup timeout on unmount
   }, [currentImage]);
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="w-full
+  h-screen text-center text-2xl">Loading...</div>;
   if (error) return <div>{error}</div>;
   return (
     <div className="w-full pt-32 ">
