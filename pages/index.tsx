@@ -84,7 +84,7 @@ export default function Home() {
           />
         </svg>
 
-        <section className=" max-w-[1232px] w-full lg:h-[71vh] md:h-[60vh] sm:h-[50vh] h-[40vh] m-auto relative bg-black">
+        <section className=" max-w-[1232px] lg:w-[850px] md:w-[600px] sm:w-[400px] w-[240px] lg:h-[71vh] md:h-[60vh] sm:h-[50vh] h-[40vh] m-auto relative bg-black">
           {!showVideo && (
             <img
               src={mostWatched[currentImage].image}
